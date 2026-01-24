@@ -1,1 +1,138 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: linear-gradient(120deg, #ff9a9e, #fad0c4);
+  color: white;
+  overflow-x: hidden;
+}
+
+/* PASSWORD SCREEN */
+#lockScreen {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+#lockScreen input {
+  padding: 12px 20px;
+  border-radius: 30px;
+  border: none;
+  margin-top: 15px;
+  font-size: 1rem;
+}
+
+#errorMsg {
+  margin-top: 10px;
+}
+
+/* SECTIONS */
+section {
+  min-height: 100vh;
+  padding: 70px 20px;
+  text-align: center;
+}
+
+h1, h2 {
+  font-family: 'Playfair Display', serif;
+}
+
+/* BUTTONS */
+button {
+  padding: 14px 36px;
+  border: none;
+  border-radius: 40px;
+  background: #ff4d6d;
+  color: white;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  transform: scale(1.1);
+}
+
+.glow {
+  box-shadow: 0 0 20px #ff4d6d;
+}
+
+/* TIMELINE */
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.timeline div {
+  background: rgba(255,255,255,0.2);
+  padding: 20px;
+  border-radius: 15px;
+}
+
+/* SLIDER */
+.slider {
+  display: flex;
+  gap: 15px;
+  overflow-x: auto;
+  margin-top: 30px;
+}
+
+.slider img {
+  width: 220px;
+  height: 300px;
+  border-radius: 20px;
+  object-fit: cover;
+}
+
+/* FINAL */
+.final {
+  background: linear-gradient(120deg, #fbc2eb, #a6c1ee);
+}
+
+.btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* ANIMATIONS */
+.fade {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: 1s;
+}
+
+.fade.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#hearts span, #explosion span {
+  position: fixed;
+  font-size: 20px;
+  animation: float 5s linear;
+}
+
+@keyframes float {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-200px); opacity: 0; }
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
 
