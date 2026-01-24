@@ -1,15 +1,26 @@
-// 🔐 PASSWORD
-const correctPassword = "onlyyou"; // CHANGE THIS
+const correctPassword = "onlyyou"; // 👈 change if you want
 
 function checkPassword() {
-  const input = document.getElementById("passwordInput").value;
-  if (input === correctPassword) {
+  const input = document.getElementById("passwordInput").value
+    .trim()
+    .toLowerCase();
+
+  const correct = correctPassword.toLowerCase();
+
+  console.log("Entered:", input);
+  console.log("Expected:", correct);
+
+  if (input === correct) {
     document.getElementById("lockScreen").style.display = "none";
     document.getElementById("mainContent").style.display = "block";
+
+    // scroll to top cleanly
+    window.scrollTo(0, 0);
   } else {
     document.getElementById("errorMsg").innerText = "Wrong password 💔";
   }
 }
+
 
 // AUDIO
 const music = document.getElementById("bgMusic");
