@@ -6,9 +6,8 @@
     <title>For My Valentine</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        /* ----- CSS STYLES (Making it look pretty) ----- */
+        /* ----- CSS STYLES ----- */
         :root {
-            /* Color Palette */
             --primary-color: #ff8fa3;
             --secondary-color: #c96679;
             --bg-color: #fff0f3;
@@ -17,11 +16,7 @@
             --glass-border: rgba(255, 255, 255, 0.8);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Poppins', sans-serif;
@@ -30,262 +25,265 @@
             color: var(--text-color);
             min-height: 100vh;
             overflow-x: hidden;
-            position: relative;
         }
 
-        /* --- Floating Hearts Background Animation --- */
-        .hearts-container {
+        /* --- LOGIN OVERLAY (New) --- */
+        #login-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #fff0f3 0%, #ffc3d0 100%);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+
+        .login-box {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            text-align: center;
+            border: 2px solid white;
+            max-width: 90%;
+            width: 400px;
+        }
+
+        .login-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 2px solid #ffe3e8;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            text-align: center;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .password-input:focus {
+            border-color: var(--primary-color);
+        }
+
+        .submit-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .submit-btn:hover { transform: scale(1.05); }
+
+        #error-msg {
+            color: #d9534f;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        /* --- MAIN CONTENT (Initially Hidden visually) --- */
+        /* We don't hide with display:none so layout is ready, we cover it with overlay */
+        
+        .hearts-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none; z-index: -1; overflow: hidden;
         }
+        
         .heart {
-            position: absolute; bottom: -50px;
-            width: 20px; height: 20px;
-            background: var(--primary-color);
-            transform: rotate(45deg);
-            opacity: 0.5;
+            position: absolute; bottom: -50px; width: 20px; height: 20px;
+            background: var(--primary-color); transform: rotate(45deg); opacity: 0.5;
             animation: floatUp 15s linear infinite;
         }
         .heart::before, .heart::after {
-            content: ''; position: absolute;
-            width: 20px; height: 20px;
+            content: ''; position: absolute; width: 20px; height: 20px;
             border-radius: 50%; background: var(--primary-color);
         }
         .heart::before { top: -10px; left: 0; }
         .heart::after { left: -10px; top: 0; }
-        
+
         @keyframes floatUp {
             0% { transform: translateY(0) rotate(45deg); opacity: 0; }
-            10% { opacity: 0.7; }
             100% { transform: translateY(-100vh) rotate(45deg); opacity: 0; }
         }
 
-        /* --- Main Container --- */
         .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 60px 20px;
-            text-align: center;
+            max-width: 900px; margin: 0 auto; padding: 60px 20px; text-align: center;
         }
 
-        /* --- Typography --- */
         h1.main-title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 4.5rem;
-            color: var(--secondary-color);
-            margin-bottom: 10px;
-            text-shadow: 3px 3px 6px rgba(201, 102, 121, 0.2);
+            font-family: 'Dancing Script', cursive; font-size: 4.5rem;
+            color: var(--secondary-color); margin-bottom: 10px;
             animation: fadeInDown 1.5s ease;
         }
 
-        .subtitle {
-            font-size: 1.3rem;
-            margin-bottom: 50px;
-            opacity: 0.9;
-            animation: fadeIn 2s ease;
-        }
+        .subtitle { font-size: 1.3rem; margin-bottom: 50px; opacity: 0.9; }
 
-        h2 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 3rem;
-            color: var(--secondary-color);
-            margin-bottom: 30px;
-        }
-
-        /* --- Polaroid Gallery Section --- */
-        .gallery {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 40px;
-            margin: 60px 0;
-        }
+        .gallery { display: flex; justify-content: center; flex-wrap: wrap; gap: 40px; margin: 60px 0; }
 
         .polaroid {
-            background: white;
-            padding: 15px 15px 60px 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            transform: rotate(-4deg);
-            transition: all 0.3s ease;
-            position: relative;
-            width: 250px;
+            background: white; padding: 15px 15px 60px 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1); transform: rotate(-4deg);
+            transition: all 0.3s ease; width: 250px;
         }
+        .polaroid:nth-child(even) { transform: rotate(3deg); }
+        .polaroid:hover { transform: scale(1.05) rotate(0deg); z-index: 10; }
 
-        .polaroid:nth-child(even) {
-             transform: rotate(3deg); 
+        /* IMAGE STYLES - Update these later */
+        .photo-placeholder {
+            width: 100%; height: 220px;
+            background-size: cover; background-position: center;
+            background-color: #eee;
         }
-
-        .polaroid:hover {
-            transform: scale(1.05) rotate(0deg) !important;
-            z-index: 10;
-            box-shadow: 0 15px 35px rgba(201, 102, 121, 0.3);
-        }
-
-        /* Replace these placeholder URLs with your actual image URLs */
+        
+        /* vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv 
+           PASTE YOUR GITHUB IMAGE LINKS BELOW WHEN YOU ARE READY 
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 
+        */
         .photo-1 { background-image: url('https://picsum.photos/id/1011/400/400'); }
         .photo-2 { background-image: url('https://picsum.photos/id/1012/400/400'); }
         .photo-3 { background-image: url('https://picsum.photos/id/1025/400/400'); }
 
-        .photo-placeholder {
-            width: 100%;
-            height: 220px;
-            background-size: cover;
-            background-position: center;
-            background-color: #eee; /* Fallback color */
-        }
-
         .caption {
-            position: absolute;
-            bottom: 15px;
-            width: 100%;
-            left: 0;
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.6rem;
-            color: #666;
+            position: absolute; bottom: 15px; width: 100%; left: 0;
+            font-family: 'Dancing Script', cursive; font-size: 1.6rem; color: #666;
         }
 
-        /* --- Love Letter Section (Glassmorphism) --- */
         .letter-container {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 2px solid var(--glass-border);
-            padding: 50px;
-            border-radius: 25px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.08);
-            margin-bottom: 50px;
+            background: var(--glass-bg); backdrop-filter: blur(12px);
+            border: 2px solid var(--glass-border); padding: 50px;
+            border-radius: 25px; margin-bottom: 50px;
+            text-align: left;
         }
+        
+        h2 { font-family: 'Dancing Script', cursive; font-size: 3rem; color: var(--secondary-color); margin-bottom: 20px; text-align: center; }
 
-        .letter-text {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            white-space: pre-wrap; /* Preserves line breaks in your text */
-        }
+        .letter-text { font-size: 1.2rem; line-height: 1.8; white-space: pre-wrap; color: #444; }
 
-        /* --- Interactive Button Section --- */
         .surprise-btn {
-            padding: 15px 45px;
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            border: none;
-            border-radius: 50px;
-            color: white;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 10px 25px rgba(201, 102, 121, 0.4);
-            transition: transform 0.2s ease;
+            padding: 15px 45px; background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            border: none; border-radius: 50px; color: white;
+            font-family: 'Poppins', sans-serif; font-size: 1.2rem; cursor: pointer;
+            box-shadow: 0 10px 25px rgba(201, 102, 121, 0.4); margin-bottom: 50px;
         }
 
-        .surprise-btn:hover {
-            transform: translateY(-3px) scale(1.02);
-        }
+        #hidden-message { display: none; margin-top: 20px; animation: popUp 0.5s ease; }
 
-        #hidden-message {
-            display: none; /* Hidden by default */
-            margin-top: 40px;
-            padding: 30px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            animation: popUp 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-        }
-
-        /* --- Animations --- */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; } to { opacity: 1; }
-        }
-        @keyframes popUp {
-            from { opacity: 0; transform: scale(0.5); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        /* Mobile responsiveness */
-        @media (max-width: 600px) {
-            h1.main-title { font-size: 3.5rem; }
-            .polaroid { width: 90%; }
-        }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes popUp { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body>
 
-    <div class="hearts-container">
-        <div class="heart" style="left: 10%; animation-duration: 12s; animation-delay: 1s;"></div>
-        <div class="heart" style="left: 30%; animation-duration: 15s; animation-delay: 3s;"></div>
-        <div class="heart" style="left: 50%; animation-duration: 10s; animation-delay: 0s;"></div>
-        <div class="heart" style="left: 70%; animation-duration: 14s; animation-delay: 5s;"></div>
-        <div class="heart" style="left: 90%; animation-duration: 11s; animation-delay: 2s;"></div>
+    <div id="login-overlay">
+        <div class="login-box">
+            <h2 class="login-title">♥ Key to my Heart ♥</h2>
+            <p style="margin-bottom: 15px; color: #777;">Enter the secret password:</p>
+            <input type="password" id="password" class="password-input" placeholder="Type here...">
+            <button class="submit-btn" onclick="checkPassword()">Unlock</button>
+            <p id="error-msg">Oops! Wrong password try again x</p>
+        </div>
     </div>
 
+    <div class="hearts-container">
+        <div class="heart" style="left: 10%; animation-duration: 12s;"></div>
+        <div class="heart" style="left: 30%; animation-duration: 15s;"></div>
+        <div class="heart" style="left: 50%; animation-duration: 10s;"></div>
+        <div class="heart" style="left: 70%; animation-duration: 14s;"></div>
+        <div class="heart" style="left: 90%; animation-duration: 11s;"></div>
+    </div>
 
     <div class="container">
         <header>
-            <h1 class="main-title">Happy Valentine's Day, [Her Name]</h1>
-            <p class="subtitle">A little corner of the internet, just for you.</p>
+            <h1 class="main-title">Happy Valentine's Day!</h1>
+            <p class="subtitle">A little surprise, just for you.</p>
         </header>
 
         <section class="gallery">
             <div class="polaroid">
                 <div class="photo-placeholder photo-1"></div> 
-                <div class="caption">Our first date</div>
+                <div class="caption">Us</div>
             </div>
-            
             <div class="polaroid">
                 <div class="photo-placeholder photo-2"></div>
-                <div class="caption">Favourite memory</div>
+                <div class="caption">Memories</div>
             </div>
-
             <div class="polaroid">
                 <div class="photo-placeholder photo-3"></div>
-                <div class="caption">Just us</div>
+                <div class="caption">Forever</div>
             </div>
         </section>
 
         <section class="letter-container">
             <h2>My Letter To You</h2>
             <p class="letter-text">
-My dearest,
+Dear [Her Name],
 
-I wanted to create something special for you today. You make my world brighter just by being in it. Every day with you feels like an adventure I never want to end.
+If you are reading this, you guessed the password correctly (or I told you what it was!).
 
-Thank you for being my partner, my best friend, and my Valentine. I love you more than words can put onto a webpage.
+I wanted to make something that lasts longer than flowers. Thank you for being the most amazing person in my life.
 
-Forever yours,
+With all my love,
 [Your Name]
             </p>
         </section>
 
         <section>
             <button class="surprise-btn" onclick="revealMessage()">Click for one last surprise</button>
-            
             <div id="hidden-message">
-                <h2 style="margin-bottom: 10px;">P.S.</h2>
-                <p style="font-size: 1.3rem;">I bought us tickets to that thing you wanted to see! ❤️</p>
+                <h2 style="margin-bottom: 10px;">I Love You! ❤️</h2>
+                <p>Ready for our dinner date?</p>
             </div>
         </section>
-
     </div>
 
     <script>
-        // Simple script to handle the button click reveal
+        // --- CONFIGURATION ---
+        
+        // 1. SET YOUR PASSWORD HERE (Keep the quotes!)
+        const secretPassword = "love"; 
+
+        // ---------------------
+
+        function checkPassword() {
+            const input = document.getElementById('password').value;
+            const overlay = document.getElementById('login-overlay');
+            const errorMsg = document.getElementById('error-msg');
+
+            // Simple check (case insensitive)
+            if (input.toLowerCase() === secretPassword.toLowerCase()) {
+                // Correct Password
+                overlay.style.opacity = '0';
+                overlay.style.visibility = 'hidden';
+            } else {
+                // Wrong Password
+                errorMsg.style.display = 'block';
+                // Shake animation
+                const box = document.querySelector('.login-box');
+                box.style.transform = 'translateX(10px)';
+                setTimeout(() => { box.style.transform = 'translateX(-10px)'; }, 100);
+                setTimeout(() => { box.style.transform = 'translateX(0)'; }, 200);
+            }
+        }
+
         function revealMessage() {
             const message = document.getElementById('hidden-message');
-            const btn = document.querySelector('.surprise-btn');
-            
-            if (message.style.display === 'block') {
-                message.style.display = 'none';
-                btn.textContent = "Click for one last surprise";
-            } else {
-                message.style.display = 'block';
-                btn.textContent = "Close surprise";
-                // Optional: Scroll to the message smoothly
-                message.scrollIntoView({ behavior: 'smooth' });
-            }
+            message.style.display = 'block';
+            message.scrollIntoView({ behavior: 'smooth' });
         }
     </script>
 </body>
