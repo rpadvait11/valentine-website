@@ -143,3 +143,54 @@ button {
 .final {
   background: linear-gradient(120deg, #fbc2eb, #a6c1ee);
 }
+/* ===== HERO SECTION ===== */
+.hero {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.hero-content {
+  animation: heroFade 1.2s ease forwards;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  opacity: 0.85;
+  margin-bottom: 30px;
+}
+
+.hero-btn {
+  padding: 14px 36px;
+  border-radius: 40px;
+  border: none;
+  background: linear-gradient(135deg, #ff4d6d, #ff758f);
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.hero-btn:hover {
+  transform: scale(1.08);
+}
+
+@keyframes heroFade {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
