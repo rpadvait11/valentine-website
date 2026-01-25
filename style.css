@@ -8,7 +8,7 @@
 /* LOGIN PAGE */
 #lockScreen {
   height: 100vh;
-  background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+  background: url("bg.jpg") center/cover no-repeat;
   display: flex;
   justify-content: center;
   align-items: center;
