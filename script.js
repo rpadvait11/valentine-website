@@ -1,86 +1,203 @@
-/* ===== CLASSY PASSWORD PAGE ===== */
-#lockScreen {
-  height: 100vh;
-  background: linear-gradient(135deg, #0f0f0f, #1c1c1c);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+/*************************
+ 🔐 PASSWORD SYSTEM
+*************************/
+const correctPassword = "onlyyou"; // 🔑 CHANGE THIS
 
-.lock-card {
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 22px;
-  padding: 40px 35px;
-  width: 90%;
-  max-width: 360px;
-  text-align: center;
-  box-shadow: 0 25px 60px rgba(0,0,0,0.4);
-  animation: fadeUp 1s ease;
-}
+function checkPassword() {
+  const input = document
+    .getElementById("passwordInput")
+    .value.trim()
+    .toLowerCase();
 
-.lock-card h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: 2rem;
-  margin-bottom: 10px;
-}
+  const error = document.getElementById("errorMsg");
 
-.lock-card p {
-  font-size: 0.95rem;
-  opacity: 0.7;
-  margin-bottom: 25px;
-}
-
-.lock-card input {
-  width: 100%;
-  padding: 14px 18px;
-  border-radius: 30px;
-  border: none;
-  outline: none;
-  background: rgba(255,255,255,0.15);
-  color: white;
-  font-size: 1rem;
-  text-align: center;
-  letter-spacing: 1px;
-}
-
-.lock-card input::placeholder {
-  color: rgba(255,255,255,0.6);
-}
-
-.lock-card button {
-  margin-top: 20px;
-  width: 100%;
-  padding: 14px;
-  border-radius: 30px;
-  border: none;
-  background: linear-gradient(135deg, #ff4d6d, #ff7a9c);
-  color: white;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.lock-card button:hover {
-  transform: scale(1.05);
-}
-
-#errorMsg {
-  display: block;
-  margin-top: 12px;
-  font-size: 0.85rem;
-  color: #ff9aa2;
-}
-
-/* subtle entry animation */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+  if (input === correctPassword.toLowerCase()) {
+    document.getElementById("lockScreen").style.display = "none";
+    document.getElementById("mainContent").style.display = "block";
+    window.scrollTo(0, 0);
+  } else {
+    error.innerText = "Incorrect password";
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+}
+
+/*************************
+ 🎵 AUDIO
+*************************/
+const music = document.getElementById("bgMusic");
+const heartSound = document.getElementById("heartSound");
+const fireSound = document.getElementById("fireSound");
+
+function startExperience() {
+  music.volume = 0.5;
+  music.play();
+  document
+    .getElementById("story")
+    .scrollIntoView({ behavior: "smooth" });
+}
+
+/*************************
+ ✍️ TYPEWRITER TEXT
+*************************/
+const lines = [
+  "You make my world brighter.",
+  "You calm my chaos.",
+  "You feel like home.",
+  "I choose you. Always."
+];
+
+let lineIndex = 0;
+let charIndex = 0;
+const typeEl = document.getElementById("typeText");
+
+function typeWriter() {
+  if (lineIndex < lines.length) {
+    if (charIndex < lines[lineIndex].length) {
+      typeEl.innerHTML += lines[lineIndex][charIndex++];
+      setTimeout(typeWriter, 60);
+    } else {
+      typeEl.innerHTML += "<br><br>";
+      charIndex = 0;
+      lineIndex++;
+      setTimeout(typeWriter, 400);
+    }
   }
+}
+typeWriter();
+
+/*************************
+ 🌸 FADE-IN ON SCROLL
+*************************/
+window.addEventListener("scroll", () => {
+  document.querySelectorAll(".fade").forEach(section => {
+    if (
+      section.getBoundingClientRect().top <
+      window.innerHeight - 100
+    ) {
+      section.classList.add("show");
+    }
+  });
+});
+
+/*************************
+ ❤️ FLOATING HEARTS
+*************************/
+setInterval(() => {
+  const heart = document.createElement("span");
+  heart.innerText = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.bottom = "0";
+  document.getElementById("hearts").appendChild(heart);
+  setTimeout(() => heart.remove(), 5000);
+}, 400);
+
+/*************************
+ 💥 YES BUTTON ACTION
+*************************/
+function yesClick() {
+  document.getElementById("finalText").innerText =
+    "You just made this Valentine unforgettable 💖";
+
+  // Heart sound
+  heartSound.currentTime = 0;
+  heartSound.play();
+
+  // Heart explosion
+  for (let i = 0; i < 30; i++) {
+    const burst = document.createElement("span");
+    burst.innerText = "💖";
+    burst.style.left = "50vw";
+    burst.style.top = "50vh";
+    document.getElementById("explosion").appendChild(burst);
+    setTimeout(() => burst.remove(), 1500);
+  }
+
+  startConfetti();
+
+  setTimeout(() => {
+    fireSound.currentTime = 0;
+    fireSound.play();
+    startFireworks();
+  }, 400);
+}
+
+/*************************
+ 🎉 CONFETTI
+*************************/
+const confettiCanvas = document.getElementById("confetti");
+const cctx = confettiCanvas.getContext("2d");
+confettiCanvas.width = window.innerWidth;
+confettiCanvas.height = window.innerHeight;
+
+let confetti = [];
+
+function startConfetti() {
+  confetti = [];
+  for (let i = 0; i < 200; i++) {
+    confetti.push({
+      x: Math.random() * confettiCanvas.width,
+      y: Math.random() * confettiCanvas.height,
+      r: Math.random() * 6 + 4,
+      d: Math.random() * 20,
+      color: `hsl(${Math.random() * 360},100%,60%)`
+    });
+  }
+  animateConfetti();
+}
+
+function animateConfetti() {
+  cctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+  confetti.forEach(c => {
+    cctx.beginPath();
+    cctx.fillStyle = c.color;
+    cctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+    cctx.fill();
+    c.y += Math.cos(c.d) + 3;
+  });
+  requestAnimationFrame(animateConfetti);
+}
+
+/*************************
+ 🎆 FIREWORKS
+*************************/
+const fireCanvas = document.getElementById("fireworks");
+const fctx = fireCanvas.getContext("2d");
+fireCanvas.width = window.innerWidth;
+fireCanvas.height = window.innerHeight;
+
+function startFireworks() {
+  for (let i = 0; i < 6; i++) {
+    setTimeout(createFirework, i * 400);
+  }
+}
+
+function createFirework() {
+  const x = Math.random() * fireCanvas.width;
+  const y = Math.random() * fireCanvas.height / 2;
+
+  for (let i = 0; i < 60; i++) {
+    const angle = (Math.PI * 2 * i) / 60;
+    const speed = Math.random() * 6 + 2;
+    animateParticle({
+      x,
+      y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      life: 60,
+      color: `hsl(${Math.random() * 360},100%,60%)`
+    });
+  }
+}
+
+function animateParticle(p) {
+  function update() {
+    if (p.life-- <= 0) return;
+    fctx.beginPath();
+    fctx.fillStyle = p.color;
+    fctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+    fctx.fill();
+    p.x += p.vx;
+    p.y += p.vy;
+    requestAnimationFrame(update);
+  }
+  update();
 }
