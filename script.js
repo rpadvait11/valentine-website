@@ -1,9 +1,8 @@
-// PASSWORD
+/* 🔐 PASSWORD */
 const correctPassword = "onlyyou";
 
 function checkPassword() {
   const input = document.getElementById("passwordInput").value.trim();
-
   if (input === correctPassword) {
     document.getElementById("lockScreen").style.display = "none";
     document.getElementById("mainContent").style.display = "block";
@@ -12,16 +11,17 @@ function checkPassword() {
   }
 }
 
-// AUDIO
+/* 🎵 AUDIO */
 const music = document.getElementById("bgMusic");
 const heartSound = document.getElementById("heartSound");
 const fireSound = document.getElementById("fireSound");
 
 function startExperience() {
+  music.volume = 0.5;
   music.play();
 }
 
-// TYPEWRITER
+/* ✍️ TYPEWRITER */
 const lines = [
   "You make my world brighter.",
   "You feel like home.",
@@ -44,10 +44,11 @@ const el = document.getElementById("typeText");
   }
 })();
 
-// YES CLICK
+/* 💖 YES BUTTON */
 function yesClick() {
   document.getElementById("finalText").innerText =
     "Happy Valentine’s Day 💖";
+
   heartSound.play();
   fireSound.play();
 }
