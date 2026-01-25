@@ -1,3 +1,79 @@
+/* ===== LOGIN STYLE PASSWORD PAGE ===== */
+#lockScreen {
+  height: 100vh;
+  background: linear-gradient(135deg, #b8d9e6, #eef6fa);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-card {
+  background: rgba(255, 255, 255, 0.9);
+  width: 320px;
+  padding: 35px 30px;
+  border-radius: 18px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  animation: fadeIn 0.8s ease;
+}
+
+.login-card h2 {
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 25px;
+  letter-spacing: 1px;
+  color: #2c3e50;
+}
+
+.login-card input {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: none;
+  background: #f3f7fa;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.login-card input::placeholder {
+  color: #999;
+}
+
+.login-card button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 25px;
+  border: none;
+  background: #a6cfe3;
+  color: #2c3e50;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.login-card button:hover {
+  background: #92c3da;
+  transform: scale(1.03);
+}
+
+#errorMsg {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: #e74c3c;
+}
+
+/* subtle animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ===== CLASSY PASSWORD PAGE ===== */
 #lockScreen {
   height: 100vh;
