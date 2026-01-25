@@ -9,14 +9,25 @@
 </head>
 <body>
 
-<!-- 🔐 PASSWORD SCREEN -->
+<!-- 🔐 LOGIN STYLE PASSWORD SCREEN -->
 <div id="lockScreen">
-  <h1>🔒 Private</h1>
-  <p>This page is only for you 💖</p>
-  <input type="password" id="passwordInput" placeholder="Enter password">
-  <button onclick="checkPassword()">Unlock ✨</button>
-  <p id="errorMsg"></p>
+  <div class="login-card">
+    <h2>LOGIN</h2>
+
+    <input type="text" placeholder="Username" disabled />
+
+    <input
+      type="password"
+      id="passwordInput"
+      placeholder="Password"
+    />
+
+    <button onclick="checkPassword()">SIGN IN</button>
+
+    <p id="errorMsg"></p>
+  </div>
 </div>
+
 
 <!-- 🌸 MAIN CONTENT -->
 <div id="mainContent" style="display:none;">
