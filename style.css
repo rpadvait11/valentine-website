@@ -8,6 +8,7 @@
 /* LOGIN PAGE */
 #lockScreen {
   height: 100vh;
+  backdrop-filter: blur(6px);
   background: url("bg.jpg") center/cover no-repeat;
   display: flex;
   justify-content: center;
