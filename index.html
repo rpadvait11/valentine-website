@@ -25,27 +25,29 @@
             color: var(--text-color);
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
         }
 
-        /* --- LOGIN OVERLAY (New) --- */
+        /* --- LOGIN OVERLAY --- */
         #login-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #fff0f3 0%, #ffc3d0 100%);
+            background: linear-gradient(135deg, rgba(255, 240, 243, 0.9) 0%, rgba(255, 195, 208, 0.9) 100%);
             z-index: 9999;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             transition: opacity 0.8s ease, visibility 0.8s;
+            backdrop-filter: blur(5px); /* Blurs the hearts behind it slightly */
         }
 
         .login-box {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px);
             padding: 40px;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
             text-align: center;
             border: 2px solid white;
             max-width: 90%;
@@ -72,9 +74,7 @@
             transition: border-color 0.3s;
         }
 
-        .password-input:focus {
-            border-color: var(--primary-color);
-        }
+        .password-input:focus { border-color: var(--primary-color); }
 
         .submit-btn {
             background: var(--primary-color);
@@ -92,42 +92,57 @@
         #error-msg {
             color: #d9534f;
             margin-top: 15px;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            font-weight: 500;
             display: none;
         }
 
-        /* --- MAIN CONTENT (Initially Hidden visually) --- */
-        /* We don't hide with display:none so layout is ready, we cover it with overlay */
-        
+        .shake { animation: shake 0.5s; }
+        @keyframes shake {
+            0% { transform: translateX(0); } 25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); } 75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        /* --- BACKGROUND HEARTS EFFECT --- */
         .hearts-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: -1; overflow: hidden;
+            pointer-events: none; z-index: 0; overflow: hidden;
         }
         
         .heart {
-            position: absolute; bottom: -50px; width: 20px; height: 20px;
-            background: var(--primary-color); transform: rotate(45deg); opacity: 0.5;
-            animation: floatUp 15s linear infinite;
+            position: absolute; bottom: -50px;
+            background: var(--primary-color);
+            transform: rotate(45deg);
+            animation: floatUp linear infinite;
+            opacity: 0; /* Starts invisible */
         }
+        
         .heart::before, .heart::after {
-            content: ''; position: absolute; width: 20px; height: 20px;
-            border-radius: 50%; background: var(--primary-color);
+            content: ''; position: absolute;
+            width: 100%; height: 100%;
+            border-radius: 50%; background: inherit;
         }
-        .heart::before { top: -10px; left: 0; }
-        .heart::after { left: -10px; top: 0; }
+        .heart::before { top: -50%; left: 0; }
+        .heart::after { left: -50%; top: 0; }
 
         @keyframes floatUp {
             0% { transform: translateY(0) rotate(45deg); opacity: 0; }
-            100% { transform: translateY(-100vh) rotate(45deg); opacity: 0; }
+            10% { opacity: 0.6; } /* Fade in */
+            100% { transform: translateY(-120vh) rotate(45deg); opacity: 0; }
         }
 
+        /* --- MAIN CONTENT (Z-Index ensures it sits ON TOP of hearts) --- */
         .container {
+            position: relative;
+            z-index: 10; /* Above the background hearts */
             max-width: 900px; margin: 0 auto; padding: 60px 20px; text-align: center;
         }
 
         h1.main-title {
             font-family: 'Dancing Script', cursive; font-size: 4.5rem;
             color: var(--secondary-color); margin-bottom: 10px;
+            text-shadow: 2px 2px 0px rgba(255,255,255,0.5);
             animation: fadeInDown 1.5s ease;
         }
 
@@ -141,19 +156,15 @@
             transition: all 0.3s ease; width: 250px;
         }
         .polaroid:nth-child(even) { transform: rotate(3deg); }
-        .polaroid:hover { transform: scale(1.05) rotate(0deg); z-index: 10; }
+        .polaroid:hover { transform: scale(1.05) rotate(0deg); z-index: 20; }
 
-        /* IMAGE STYLES - Update these later */
         .photo-placeholder {
             width: 100%; height: 220px;
             background-size: cover; background-position: center;
             background-color: #eee;
         }
         
-        /* vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv 
-           PASTE YOUR GITHUB IMAGE LINKS BELOW WHEN YOU ARE READY 
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ 
-        */
+        /* vvv PASTE YOUR GITHUB IMAGE LINKS BELOW vvv */
         .photo-1 { background-image: url('https://picsum.photos/id/1011/400/400'); }
         .photo-2 { background-image: url('https://picsum.photos/id/1012/400/400'); }
         .photo-3 { background-image: url('https://picsum.photos/id/1025/400/400'); }
@@ -168,10 +179,10 @@
             border: 2px solid var(--glass-border); padding: 50px;
             border-radius: 25px; margin-bottom: 50px;
             text-align: left;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
         
         h2 { font-family: 'Dancing Script', cursive; font-size: 3rem; color: var(--secondary-color); margin-bottom: 20px; text-align: center; }
-
         .letter-text { font-size: 1.2rem; line-height: 1.8; white-space: pre-wrap; color: #444; }
 
         .surprise-btn {
@@ -191,20 +202,29 @@
 
     <div id="login-overlay">
         <div class="login-box">
-            <h2 class="login-title">♥ Open to know the secret ♥</h2>
+            <h2 class="login-title">♥ Key to my Heart ♥</h2>
             <p style="margin-bottom: 15px; color: #777;">Enter the secret password:</p>
             <input type="password" id="password" class="password-input" placeholder="Type here...">
             <button class="submit-btn" onclick="checkPassword()">Unlock</button>
-            <p id="error-msg">Try madu sweetu papu!! </p>
+            <p id="error-msg">Not quite! Think harder... ❤️</p>
         </div>
     </div>
 
     <div class="hearts-container">
-        <div class="heart" style="left: 10%; animation-duration: 12s;"></div>
-        <div class="heart" style="left: 30%; animation-duration: 15s;"></div>
-        <div class="heart" style="left: 50%; animation-duration: 10s;"></div>
-        <div class="heart" style="left: 70%; animation-duration: 14s;"></div>
-        <div class="heart" style="left: 90%; animation-duration: 11s;"></div>
+        <div class="heart" style="left: 10%; width: 15px; height: 15px; animation-duration: 10s; animation-delay: 0s;"></div>
+        <div class="heart" style="left: 25%; width: 20px; height: 20px; animation-duration: 14s; animation-delay: 2s;"></div>
+        <div class="heart" style="left: 40%; width: 10px; height: 10px; animation-duration: 12s; animation-delay: 4s;"></div>
+        <div class="heart" style="left: 70%; width: 18px; height: 18px; animation-duration: 15s; animation-delay: 1s;"></div>
+        <div class="heart" style="left: 85%; width: 12px; height: 12px; animation-duration: 11s; animation-delay: 3s;"></div>
+        
+        <div class="heart" style="left: 15%; width: 25px; height: 25px; animation-duration: 18s; animation-delay: 5s;"></div>
+        <div class="heart" style="left: 35%; width: 30px; height: 30px; animation-duration: 13s; animation-delay: 7s;"></div>
+        <div class="heart" style="left: 60%; width: 22px; height: 22px; animation-duration: 16s; animation-delay: 2s;"></div>
+        <div class="heart" style="left: 80%; width: 28px; height: 28px; animation-duration: 12s; animation-delay: 6s;"></div>
+        
+        <div class="heart" style="left: 5%; width: 35px; height: 35px; animation-duration: 20s; animation-delay: 0s;"></div>
+        <div class="heart" style="left: 50%; width: 40px; height: 40px; animation-duration: 25s; animation-delay: 4s;"></div>
+        <div class="heart" style="left: 95%; width: 32px; height: 32px; animation-duration: 22s; animation-delay: 2s;"></div>
     </div>
 
     <div class="container">
@@ -233,7 +253,7 @@
             <p class="letter-text">
 Dear [Her Name],
 
-If you are reading this, you guessed the password correctly (or I told you what it was!).
+You guessed the password! (Or maybe I gave you a hint...)
 
 I wanted to make something that lasts longer than flowers. Thank you for being the most amazing person in my life.
 
@@ -253,18 +273,16 @@ With all my love,
 
     <script>
         // --- CONFIGURATION ---
-        
-        // 1. SET YOUR PASSWORD HERE (Keep the quotes!)
+        // CHANGE PASSWORD HERE
         const secretPassword = "love"; 
-
         // ---------------------
 
         function checkPassword() {
             const input = document.getElementById('password').value;
             const overlay = document.getElementById('login-overlay');
             const errorMsg = document.getElementById('error-msg');
+            const loginBox = document.querySelector('.login-box');
 
-            // Simple check (case insensitive)
             if (input.toLowerCase() === secretPassword.toLowerCase()) {
                 // Correct Password
                 overlay.style.opacity = '0';
@@ -272,11 +290,9 @@ With all my love,
             } else {
                 // Wrong Password
                 errorMsg.style.display = 'block';
-                // Shake animation
-                const box = document.querySelector('.login-box');
-                box.style.transform = 'translateX(10px)';
-                setTimeout(() => { box.style.transform = 'translateX(-10px)'; }, 100);
-                setTimeout(() => { box.style.transform = 'translateX(0)'; }, 200);
+                loginBox.classList.remove('shake');
+                void loginBox.offsetWidth; // trigger reflow
+                loginBox.classList.add('shake');
             }
         }
 
