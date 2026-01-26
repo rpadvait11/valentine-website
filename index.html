@@ -14,7 +14,7 @@
             --secondary-color: #c96679;
             --bg-color: #fff0f3;
             --text-color: #5a4a4f;
-            --glass-bg: rgba(255, 255, 255, 0.7); /* Made slightly more opaque for readability */
+            --glass-bg: rgba(255, 255, 255, 0.7);
             --glass-border: rgba(255, 255, 255, 0.8);
         }
 
@@ -24,22 +24,54 @@
             font-family: 'Poppins', sans-serif;
             color: var(--text-color);
             min-height: 100vh;
-            overflow-x: hidden;
+            overflow-x: hidden; /* Hides horizontal scrollbar when images slide out */
             position: relative;
             
-            /* --- BACKGROUND IMAGE SETTINGS --- */
-            /* Ensure you have a file named 'background.jpg' in your folder! */
-            background: url('background.png') no-repeat center center fixed; 
+            /* BACKGROUND IMAGE */
+            background: url('background.jpg') no-repeat center center fixed; 
             background-size: cover;
             
             /* Heart Cursor */
             cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>❤️</text></svg>") 16 0, auto;
         }
 
+        /* --- SIDE FLOATING IMAGES (NEW) --- */
+        .side-photo {
+            position: absolute;
+            width: 180px;
+            padding: 10px 10px 40px 10px;
+            background: white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            opacity: 0;
+            z-index: 1; /* Behind the main container but in front of background */
+        }
+        
+        .side-photo img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border: 1px solid #eee;
+        }
+
+        /* Initial Positions (Hidden) */
+        .left-side { left: 40px; transform: translateX(-250px) rotate(-10deg); }
+        .right-side { right: 40px; transform: translateX(250px) rotate(10deg); }
+
+        /* Active State (Visible) */
+        .side-photo.visible {
+            transform: translateX(0) rotate(var(--rotation));
+            opacity: 1;
+        }
+
+        /* Hide side photos on Mobile/Tablets so text isn't blocked */
+        @media (max-width: 1100px) {
+            .side-photo { display: none; }
+        }
+
         /* --- LOGIN OVERLAY --- */
         #login-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            /* Kept the gradient here so the photo is a surprise reveal! */
             background: linear-gradient(135deg, rgba(255, 240, 243, 1) 0%, rgba(255, 195, 208, 1) 100%);
             z-index: 9999; display: flex; justify-content: center; align-items: center;
             flex-direction: column; transition: opacity 0.8s ease, visibility 0.8s;
@@ -62,7 +94,6 @@
             font-family: 'Poppins', sans-serif; font-size: 1rem; text-align: center;
             outline: none; transition: border-color 0.3s;
         }
-
         .password-input:focus { border-color: var(--primary-color); }
 
         .submit-btn {
@@ -75,13 +106,6 @@
         #error-msg { color: #d9534f; margin-top: 15px; font-size: 0.95rem; display: none; }
         .shake { animation: shake 0.5s; }
         @keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } 100% { transform: translateX(0); } }
-
-        /* --- BACKGROUND HEARTS --- */
-        .hearts-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
-        .heart { position: absolute; bottom: -50px; background: var(--primary-color); transform: rotate(45deg); animation: floatUp linear infinite; opacity: 0; }
-        .heart::before, .heart::after { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; background: inherit; }
-        .heart::before { top: -50%; left: 0; } .heart::after { left: -50%; top: 0; }
-        @keyframes floatUp { 0% { transform: translateY(0) rotate(45deg); opacity: 0; } 10% { opacity: 0.6; } 100% { transform: translateY(-120vh) rotate(45deg); opacity: 0; } }
 
         /* --- MAIN CONTAINER --- */
         .container { position: relative; z-index: 10; max-width: 900px; margin: 0 auto; padding: 60px 20px; text-align: center; }
@@ -169,7 +193,6 @@
             border-radius: 25px; margin-bottom: 50px; text-align: left;
             animation: popUp 0.8s ease;
         }
-
         h2 { font-family: 'Dancing Script', cursive; font-size: 3rem; color: var(--secondary-color); margin-bottom: 20px; text-align: center; text-shadow: 1px 1px 2px rgba(255,255,255,0.8); }
         .letter-text { font-size: 1.2rem; line-height: 1.8; white-space: pre-wrap; color: #444; }
 
@@ -229,12 +252,32 @@
         🎵
     </div>
 
-    <div class="hearts-container">
-        <div class="heart" style="left: 10%; width: 15px; height: 15px; animation-duration: 10s;"></div>
-        <div class="heart" style="left: 25%; width: 20px; height: 20px; animation-duration: 14s;"></div>
-        <div class="heart" style="left: 60%; width: 22px; height: 22px; animation-duration: 16s;"></div>
-        <div class="heart" style="left: 95%; width: 32px; height: 32px; animation-duration: 22s;"></div>
+    <div class="side-photo left-side" style="top: 200px; --rotation: -5deg;">
+        <img src="https://picsum.photos/200/200?random=1" alt="Memory">
     </div>
+    <div class="side-photo left-side" style="top: 700px; --rotation: 5deg;">
+        <img src="https://picsum.photos/200/200?random=2" alt="Memory">
+    </div>
+    <div class="side-photo left-side" style="top: 1200px; --rotation: -8deg;">
+        <img src="https://picsum.photos/200/200?random=3" alt="Memory">
+    </div>
+    <div class="side-photo left-side" style="top: 1700px; --rotation: 6deg;">
+        <img src="https://picsum.photos/200/200?random=4" alt="Memory">
+    </div>
+
+    <div class="side-photo right-side" style="top: 400px; --rotation: 8deg;">
+        <img src="https://picsum.photos/200/200?random=5" alt="Memory">
+    </div>
+    <div class="side-photo right-side" style="top: 900px; --rotation: -6deg;">
+        <img src="https://picsum.photos/200/200?random=6" alt="Memory">
+    </div>
+    <div class="side-photo right-side" style="top: 1400px; --rotation: 7deg;">
+        <img src="https://picsum.photos/200/200?random=7" alt="Memory">
+    </div>
+    <div class="side-photo right-side" style="top: 1900px; --rotation: -4deg;">
+        <img src="https://picsum.photos/200/200?random=8" alt="Memory">
+    </div>
+
 
     <div class="container">
         <header>
@@ -243,75 +286,39 @@
         </header>
 
         <section class="gallery">
-            <div class="polaroid">
-                <div class="photo-placeholder photo-1"></div> 
-                <div class="caption">Us</div>
-            </div>
-            <div class="polaroid">
-                <div class="photo-placeholder photo-2"></div>
-                <div class="caption">Memories</div>
-            </div>
-            <div class="polaroid">
-                <div class="photo-placeholder photo-3"></div>
-                <div class="caption">Forever</div>
-            </div>
+            <div class="polaroid"><div class="photo-placeholder photo-1"></div><div class="caption">Us</div></div>
+            <div class="polaroid"><div class="photo-placeholder photo-2"></div><div class="caption">Memories</div></div>
+            <div class="polaroid"><div class="photo-placeholder photo-3"></div><div class="caption">Forever</div></div>
         </section>
 
         <section class="timeline-container">
             <h2 class="timeline-title">Our Journey</h2>
             <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-date">August 25, 2022</div> 
-                    <div class="timeline-content">The day we first met ☕</div> 
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">September 10, 2022</div>
-                    <div class="timeline-content">Our first movie date 🎬</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">December 25, 2023</div>
-                    <div class="timeline-content">Our first Christmas together 🎄</div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-date">Today</div>
-                    <div class="timeline-content">Celebrating us ❤️</div>
-                </div>
+                <div class="timeline-item"><div class="timeline-date">August 25, 2022</div><div class="timeline-content">The day we first met ☕</div></div>
+                <div class="timeline-item"><div class="timeline-date">September 10, 2022</div><div class="timeline-content">Our first movie date 🎬</div></div>
+                <div class="timeline-item"><div class="timeline-date">December 25, 2023</div><div class="timeline-content">Our first Christmas together 🎄</div></div>
+                <div class="timeline-item"><div class="timeline-date">Today</div><div class="timeline-content">Celebrating us ❤️</div></div>
             </div>
         </section>
 
         <section style="margin-bottom: 60px; text-align: center;">
             <h2 style="font-size: 2.5rem; margin-bottom: 20px; font-family: 'Dancing Script', cursive; color: var(--secondary-color); text-shadow: 1px 1px 2px white;">Time Since We Met</h2>
             <div id="love-timer" style="
-                font-family: 'Poppins', sans-serif;
-                font-size: 1.2rem;
-                background: rgba(255, 255, 255, 0.9);
-                display: inline-block;
-                padding: 15px 30px;
-                border-radius: 50px;
-                box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-                color: var(--secondary-color);
-                font-weight: bold;
-                border: 2px solid #ffe3e8;
-            ">
-                Calculating...
-            </div>
+                font-family: 'Poppins', sans-serif; font-size: 1.2rem; background: rgba(255, 255, 255, 0.9);
+                display: inline-block; padding: 15px 30px; border-radius: 50px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.1); color: var(--secondary-color); font-weight: bold; border: 2px solid #ffe3e8;
+            ">Calculating...</div>
         </section>
 
         <section style="margin-bottom: 60px;">
             <h2 style="margin-bottom: 10px;">Plant a Garden for Us 🌸</h2>
             <p style="margin-bottom: 20px; opacity: 0.8; font-weight: bold;">Click inside the box to make love bloom...</p>
-            
             <div id="garden-box" style="
-                width: 100%; height: 300px; 
-                background: linear-gradient(to top, rgba(230, 240, 255, 0.8) 0%, rgba(255, 255, 255, 0.9) 100%); 
-                border: 2px solid var(--glass-border); 
-                border-radius: 20px; position: relative; 
-                overflow: hidden; cursor: crosshair;
-                box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+                width: 100%; height: 300px; background: linear-gradient(to top, rgba(230, 240, 255, 0.8) 0%, rgba(255, 255, 255, 0.9) 100%); 
+                border: 2px solid var(--glass-border); border-radius: 20px; position: relative; 
+                overflow: hidden; cursor: crosshair; box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
             " onclick="plantFlower(event)">
-                <div style="position: absolute; bottom: 10px; width: 100%; text-align: center; color: #aaa; pointer-events: none;">
-                    (Click anywhere here!)
-                </div>
+                <div style="position: absolute; bottom: 10px; width: 100%; text-align: center; color: #aaa; pointer-events: none;">(Click anywhere here!)</div>
             </div>
         </section>
 
@@ -504,7 +511,7 @@ With all my love,
             yesScale += 0.2; 
             noScale -= 0.1;
 
-            if (noScale < 0) noScale = 0; // Prevent it from flipping
+            if (noScale < 0) noScale = 0; 
 
             yesBtn.style.transform = `scale(${yesScale})`;
             noBtn.style.transform = `scale(${noScale})`;
@@ -537,6 +544,23 @@ With all my love,
             }, 250);
         }
 
+        // --- SCROLL ANIMATION FOR SIDE PHOTOS ---
+        window.addEventListener('scroll', () => {
+            const photos = document.querySelectorAll('.side-photo');
+            const triggerBottom = window.innerHeight * 0.8; // Trigger when photo is 80% down viewport
+
+            photos.forEach(photo => {
+                const photoTop = photo.getBoundingClientRect().top;
+
+                if(photoTop < triggerBottom) {
+                    photo.classList.add('visible'); // Slide IN
+                } else {
+                    photo.classList.remove('visible'); // Slide OUT (Hide when scrolling up)
+                }
+            });
+        });
+
+        // --- TAB TITLE TRICK ---
         let docTitle = document.title;
         window.addEventListener("blur", () => { document.title = "Come back! 🥺"; });
         window.addEventListener("focus", () => { document.title = docTitle; });
