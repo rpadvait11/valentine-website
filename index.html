@@ -30,170 +30,110 @@
 
         /* --- LOGIN OVERLAY --- */
         #login-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(135deg, rgba(255, 240, 243, 0.9) 0%, rgba(255, 195, 208, 0.9) 100%);
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            transition: opacity 0.8s ease, visibility 0.8s;
-            backdrop-filter: blur(5px); /* Blurs the hearts behind it slightly */
+            z-index: 9999; display: flex; justify-content: center; align-items: center;
+            flex-direction: column; transition: opacity 0.8s ease, visibility 0.8s;
+            backdrop-filter: blur(5px);
         }
 
         .login-box {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(15px);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-            text-align: center;
-            border: 2px solid white;
-            max-width: 90%;
-            width: 400px;
+            background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(15px);
+            padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            text-align: center; border: 2px solid white; max-width: 90%; width: 400px;
         }
 
         .login-title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.5rem;
-            color: var(--secondary-color);
-            margin-bottom: 20px;
+            font-family: 'Dancing Script', cursive; font-size: 2.5rem;
+            color: var(--secondary-color); margin-bottom: 20px;
         }
 
         .password-input {
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 2px solid #ffe3e8;
-            border-radius: 50px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            text-align: center;
-            outline: none;
-            transition: border-color 0.3s;
+            width: 100%; padding: 15px; margin-bottom: 20px;
+            border: 2px solid #ffe3e8; border-radius: 50px;
+            font-family: 'Poppins', sans-serif; font-size: 1rem; text-align: center;
+            outline: none; transition: border-color 0.3s;
         }
 
         .password-input:focus { border-color: var(--primary-color); }
 
         .submit-btn {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: transform 0.2s;
+            background: var(--primary-color); color: white; border: none;
+            padding: 12px 30px; border-radius: 50px; font-size: 1.1rem;
+            cursor: pointer; transition: transform 0.2s;
         }
-
         .submit-btn:hover { transform: scale(1.05); }
 
-        #error-msg {
-            color: #d9534f;
-            margin-top: 15px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            display: none;
-        }
-
+        #error-msg { color: #d9534f; margin-top: 15px; font-size: 0.95rem; display: none; }
         .shake { animation: shake 0.5s; }
-        @keyframes shake {
-            0% { transform: translateX(0); } 25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); } 75% { transform: translateX(-5px); }
-            100% { transform: translateX(0); }
-        }
+        @keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } 100% { transform: translateX(0); } }
 
-        /* --- BACKGROUND HEARTS EFFECT --- */
-        .hearts-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 0; overflow: hidden;
-        }
-        
-        .heart {
-            position: absolute; bottom: -50px;
-            background: var(--primary-color);
-            transform: rotate(45deg);
-            animation: floatUp linear infinite;
-            opacity: 0; /* Starts invisible */
-        }
-        
-        .heart::before, .heart::after {
-            content: ''; position: absolute;
-            width: 100%; height: 100%;
-            border-radius: 50%; background: inherit;
-        }
-        .heart::before { top: -50%; left: 0; }
-        .heart::after { left: -50%; top: 0; }
+        /* --- BACKGROUND HEARTS --- */
+        .hearts-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+        .heart { position: absolute; bottom: -50px; background: var(--primary-color); transform: rotate(45deg); animation: floatUp linear infinite; opacity: 0; }
+        .heart::before, .heart::after { content: ''; position: absolute; width: 100%; height: 100%; border-radius: 50%; background: inherit; }
+        .heart::before { top: -50%; left: 0; } .heart::after { left: -50%; top: 0; }
+        @keyframes floatUp { 0% { transform: translateY(0) rotate(45deg); opacity: 0; } 10% { opacity: 0.6; } 100% { transform: translateY(-120vh) rotate(45deg); opacity: 0; } }
 
-        @keyframes floatUp {
-            0% { transform: translateY(0) rotate(45deg); opacity: 0; }
-            10% { opacity: 0.6; } /* Fade in */
-            100% { transform: translateY(-120vh) rotate(45deg); opacity: 0; }
-        }
+        /* --- MAIN CONTAINER --- */
+        .container { position: relative; z-index: 10; max-width: 900px; margin: 0 auto; padding: 60px 20px; text-align: center; }
 
-        /* --- MAIN CONTENT (Z-Index ensures it sits ON TOP of hearts) --- */
-        .container {
-            position: relative;
-            z-index: 10; /* Above the background hearts */
-            max-width: 900px; margin: 0 auto; padding: 60px 20px; text-align: center;
-        }
-
-        h1.main-title {
-            font-family: 'Dancing Script', cursive; font-size: 4.5rem;
-            color: var(--secondary-color); margin-bottom: 10px;
-            text-shadow: 2px 2px 0px rgba(255,255,255,0.5);
-            animation: fadeInDown 1.5s ease;
-        }
-
+        h1.main-title { font-family: 'Dancing Script', cursive; font-size: 4.5rem; color: var(--secondary-color); margin-bottom: 10px; text-shadow: 2px 2px 0px rgba(255,255,255,0.5); animation: fadeInDown 1.5s ease; }
         .subtitle { font-size: 1.3rem; margin-bottom: 50px; opacity: 0.9; }
 
         .gallery { display: flex; justify-content: center; flex-wrap: wrap; gap: 40px; margin: 60px 0; }
-
-        .polaroid {
-            background: white; padding: 15px 15px 60px 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1); transform: rotate(-4deg);
-            transition: all 0.3s ease; width: 250px;
-        }
+        .polaroid { background: white; padding: 15px 15px 60px 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); transform: rotate(-4deg); transition: all 0.3s ease; width: 250px; }
         .polaroid:nth-child(even) { transform: rotate(3deg); }
         .polaroid:hover { transform: scale(1.05) rotate(0deg); z-index: 20; }
-
-        .photo-placeholder {
-            width: 100%; height: 220px;
-            background-size: cover; background-position: center;
-            background-color: #eee;
-        }
+        .photo-placeholder { width: 100%; height: 220px; background-size: cover; background-position: center; background-color: #eee; }
         
-        /* vvv PASTE YOUR GITHUB IMAGE LINKS BELOW vvv */
+        /* PHOTOS */
         .photo-1 { background-image: url('https://picsum.photos/id/1011/400/400'); }
         .photo-2 { background-image: url('https://picsum.photos/id/1012/400/400'); }
         .photo-3 { background-image: url('https://picsum.photos/id/1025/400/400'); }
 
-        .caption {
-            position: absolute; bottom: 15px; width: 100%; left: 0;
-            font-family: 'Dancing Script', cursive; font-size: 1.6rem; color: #666;
-        }
+        .caption { position: absolute; bottom: 15px; width: 100%; left: 0; font-family: 'Dancing Script', cursive; font-size: 1.6rem; color: #666; }
 
-        .letter-container {
-            background: var(--glass-bg); backdrop-filter: blur(12px);
-            border: 2px solid var(--glass-border); padding: 50px;
-            border-radius: 25px; margin-bottom: 50px;
-            text-align: left;
+        /* --- PRANK GAME SECTION --- */
+        .game-area {
+            position: relative; height: 300px; background: var(--glass-bg);
+            border: 2px solid var(--glass-border); border-radius: 25px; margin-bottom: 50px;
+            display: flex; justify-content: center; align-items: center; overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
-        
+        #runaway-btn {
+            position: absolute; padding: 15px 40px;
+            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+            color: white; border: none; border-radius: 50px;
+            font-family: 'Poppins', sans-serif; font-size: 1.2rem; cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: top 0.3s ease, left 0.3s ease;
+        }
+
+        /* --- ACTUAL LETTER --- */
+        #actual-letter {
+            display: none; background: var(--glass-bg); backdrop-filter: blur(12px);
+            border: 2px solid var(--glass-border); padding: 50px;
+            border-radius: 25px; margin-bottom: 50px; text-align: left;
+            animation: popUp 0.8s ease;
+        }
+
         h2 { font-family: 'Dancing Script', cursive; font-size: 3rem; color: var(--secondary-color); margin-bottom: 20px; text-align: center; }
         .letter-text { font-size: 1.2rem; line-height: 1.8; white-space: pre-wrap; color: #444; }
 
-        .surprise-btn {
-            padding: 15px 45px; background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            border: none; border-radius: 50px; color: white;
-            font-family: 'Poppins', sans-serif; font-size: 1.2rem; cursor: pointer;
-            box-shadow: 0 10px 25px rgba(201, 102, 121, 0.4); margin-bottom: 50px;
-        }
-
+        .surprise-btn { padding: 15px 45px; background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); border: none; border-radius: 50px; color: white; font-family: 'Poppins', sans-serif; font-size: 1.2rem; cursor: pointer; box-shadow: 0 10px 25px rgba(201, 102, 121, 0.4); margin-bottom: 50px; }
         #hidden-message { display: none; margin-top: 20px; animation: popUp 0.5s ease; }
 
+        /* --- MUSIC BUTTON --- */
+        .music-control {
+            position: fixed; bottom: 20px; right: 20px; z-index: 100;
+            background: white; width: 50px; height: 50px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1); cursor: pointer;
+            transition: transform 0.2s; border: 2px solid var(--primary-color);
+            display: none; /* Hidden until unlocked */
+        }
+        .music-control:hover { transform: scale(1.1); }
+        
         @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes popUp { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
     </style>
@@ -210,21 +150,19 @@
         </div>
     </div>
 
+    <audio id="bg-music" loop>
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="music-control" onclick="toggleMusic()" id="music-btn">
+        🎵
+    </div>
+
     <div class="hearts-container">
-        <div class="heart" style="left: 10%; width: 15px; height: 15px; animation-duration: 10s; animation-delay: 0s;"></div>
-        <div class="heart" style="left: 25%; width: 20px; height: 20px; animation-duration: 14s; animation-delay: 2s;"></div>
-        <div class="heart" style="left: 40%; width: 10px; height: 10px; animation-duration: 12s; animation-delay: 4s;"></div>
-        <div class="heart" style="left: 70%; width: 18px; height: 18px; animation-duration: 15s; animation-delay: 1s;"></div>
-        <div class="heart" style="left: 85%; width: 12px; height: 12px; animation-duration: 11s; animation-delay: 3s;"></div>
-        
-        <div class="heart" style="left: 15%; width: 25px; height: 25px; animation-duration: 18s; animation-delay: 5s;"></div>
-        <div class="heart" style="left: 35%; width: 30px; height: 30px; animation-duration: 13s; animation-delay: 7s;"></div>
-        <div class="heart" style="left: 60%; width: 22px; height: 22px; animation-duration: 16s; animation-delay: 2s;"></div>
-        <div class="heart" style="left: 80%; width: 28px; height: 28px; animation-duration: 12s; animation-delay: 6s;"></div>
-        
-        <div class="heart" style="left: 5%; width: 35px; height: 35px; animation-duration: 20s; animation-delay: 0s;"></div>
-        <div class="heart" style="left: 50%; width: 40px; height: 40px; animation-duration: 25s; animation-delay: 4s;"></div>
-        <div class="heart" style="left: 95%; width: 32px; height: 32px; animation-duration: 22s; animation-delay: 2s;"></div>
+        <div class="heart" style="left: 10%; width: 15px; height: 15px; animation-duration: 10s;"></div>
+        <div class="heart" style="left: 25%; width: 20px; height: 20px; animation-duration: 14s;"></div>
+        <div class="heart" style="left: 60%; width: 22px; height: 22px; animation-duration: 16s;"></div>
+        <div class="heart" style="left: 95%; width: 32px; height: 32px; animation-duration: 22s;"></div>
     </div>
 
     <div class="container">
@@ -248,14 +186,23 @@
             </div>
         </section>
 
-        <section class="letter-container">
-            <h2>My Letter To You</h2>
+        <h2 style="margin-bottom: 10px;">My Letter To You</h2>
+        <p style="margin-bottom: 20px; color: #666;">Prove you really want to read it...</p>
+        
+        <div class="game-area" id="game-area">
+            <button id="runaway-btn" onmouseover="moveButton(event)" onclick="moveButton(event)">Read Letter</button>
+        </div>
+
+        <section id="actual-letter">
+            <h2>Finally!</h2>
             <p class="letter-text">
 Dear [Her Name],
 
-You guessed the password! (Or maybe I gave you a hint...)
+You caught the button! (I promise I won't run away like that button did).
 
-I wanted to make something that lasts longer than flowers. Thank you for being the most amazing person in my life.
+I wanted to make something special for you to show how much I appreciate you. You are my favorite person, my partner in crime, and my best friend.
+
+Happy Valentine's Day!
 
 With all my love,
 [Your Name]
@@ -272,28 +219,79 @@ With all my love,
     </div>
 
     <script>
-        // --- CONFIGURATION ---
-        // CHANGE PASSWORD HERE
+        // --- PASSWORD CONFIG ---
         const secretPassword = "love"; 
-        // ---------------------
+
+        // --- PRANK GAME VARIABLES ---
+        let jumps = 0;
+        const maxJumps = 6;
+        const taunts = ["Too slow! 😜", "Missed me! 😂", "Catch me if you can!", "Nope!", "Almost...", "Okay I give up! ❤️"];
 
         function checkPassword() {
             const input = document.getElementById('password').value;
             const overlay = document.getElementById('login-overlay');
             const errorMsg = document.getElementById('error-msg');
             const loginBox = document.querySelector('.login-box');
+            const music = document.getElementById('bg-music');
+            const musicBtn = document.getElementById('music-btn');
 
             if (input.toLowerCase() === secretPassword.toLowerCase()) {
-                // Correct Password
                 overlay.style.opacity = '0';
                 overlay.style.visibility = 'hidden';
+                
+                // START MUSIC HERE
+                music.volume = 0.5; // Set volume to 50%
+                music.play().catch(error => {
+                    console.log("Autoplay prevented by browser - user interaction needed");
+                });
+                musicBtn.style.display = 'flex'; // Show music button
+                
             } else {
-                // Wrong Password
                 errorMsg.style.display = 'block';
                 loginBox.classList.remove('shake');
-                void loginBox.offsetWidth; // trigger reflow
+                void loginBox.offsetWidth;
                 loginBox.classList.add('shake');
             }
+        }
+
+        // --- MUSIC TOGGLE ---
+        function toggleMusic() {
+            const music = document.getElementById('bg-music');
+            const btn = document.getElementById('music-btn');
+            
+            if (music.paused) {
+                music.play();
+                btn.innerHTML = "🎵";
+            } else {
+                music.pause();
+                btn.innerHTML = "🔇";
+            }
+        }
+
+        // --- PRANK BUTTON LOGIC ---
+        function moveButton(event) {
+            const btn = document.getElementById('runaway-btn');
+            const gameArea = document.getElementById('game-area');
+
+            if (jumps >= maxJumps) {
+                if (event.type === 'click') {
+                    gameArea.style.display = 'none'; 
+                    document.getElementById('actual-letter').style.display = 'block'; 
+                }
+                return;
+            }
+
+            const areaRect = gameArea.getBoundingClientRect();
+            const btnRect = btn.getBoundingClientRect();
+            const maxLeft = areaRect.width - btnRect.width - 40; 
+            const maxTop = areaRect.height - btnRect.height - 40;
+            
+            btn.style.left = (Math.random() * maxLeft + 20) + 'px';
+            btn.style.top = (Math.random() * maxTop + 20) + 'px';
+
+            if (jumps < taunts.length) btn.innerText = taunts[jumps];
+            jumps++;
+            if (jumps >= maxJumps) btn.innerText = "Okay, I give up! Click me! ❤️";
         }
 
         function revealMessage() {
