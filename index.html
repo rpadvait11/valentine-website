@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>For My Valentine</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    
     <style>
         /* ----- CSS STYLES ----- */
         :root {
@@ -87,7 +89,7 @@
         .polaroid:hover { transform: scale(1.05) rotate(0deg); z-index: 20; }
         .photo-placeholder { width: 100%; height: 220px; background-size: cover; background-position: center; background-color: #eee; }
         
-        /* PHOTOS */
+        /* PHOTOS - PASTE YOUR LINKS HERE */
         .photo-1 { background-image: url('https://picsum.photos/id/1011/400/400'); }
         .photo-2 { background-image: url('https://picsum.photos/id/1012/400/400'); }
         .photo-3 { background-image: url('https://picsum.photos/id/1025/400/400'); }
@@ -130,7 +132,7 @@
             display: flex; justify-content: center; align-items: center;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1); cursor: pointer;
             transition: transform 0.2s; border: 2px solid var(--primary-color);
-            display: none; /* Hidden until unlocked */
+            display: none; 
         }
         .music-control:hover { transform: scale(1.1); }
         
@@ -239,12 +241,10 @@ With all my love,
                 overlay.style.opacity = '0';
                 overlay.style.visibility = 'hidden';
                 
-                // START MUSIC HERE
-                music.volume = 0.5; // Set volume to 50%
-                music.play().catch(error => {
-                    console.log("Autoplay prevented by browser - user interaction needed");
-                });
-                musicBtn.style.display = 'flex'; // Show music button
+                // Play Music
+                music.volume = 0.5; 
+                music.play();
+                musicBtn.style.display = 'flex';
                 
             } else {
                 errorMsg.style.display = 'block';
@@ -254,7 +254,6 @@ With all my love,
             }
         }
 
-        // --- MUSIC TOGGLE ---
         function toggleMusic() {
             const music = document.getElementById('bg-music');
             const btn = document.getElementById('music-btn');
@@ -294,10 +293,27 @@ With all my love,
             if (jumps >= maxJumps) btn.innerText = "Okay, I give up! Click me! ❤️";
         }
 
+        // --- CONFETTI REVEAL ---
         function revealMessage() {
             const message = document.getElementById('hidden-message');
             message.style.display = 'block';
             message.scrollIntoView({ behavior: 'smooth' });
+
+            // Confetti Magic
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
         }
     </script>
 </body>
