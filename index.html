@@ -28,6 +28,8 @@
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
+            /* --- NEW: HEART CURSOR --- */
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>❤️</text></svg>") 16 0, auto;
         }
 
         /* --- LOGIN OVERLAY --- */
@@ -97,7 +99,7 @@
 
         .caption { position: absolute; bottom: 15px; width: 100%; left: 0; font-family: 'Dancing Script', cursive; font-size: 1.6rem; color: #666; }
 
-        /* --- NEW: TIMELINE STYLE --- */
+        /* --- TIMELINE STYLE --- */
         .timeline-container {
             background: var(--glass-bg); backdrop-filter: blur(12px); border-radius: 25px;
             padding: 40px; margin-bottom: 50px; text-align: left;
@@ -113,7 +115,7 @@
         .timeline-date { font-weight: bold; color: var(--secondary-color); font-size: 1.1rem; }
         .timeline-content { color: #555; margin-top: 5px; }
 
-        /* --- NEW: 10 REASONS GRID STYLE --- */
+        /* --- 10 REASONS GRID STYLE --- */
         .reasons-container { margin-bottom: 60px; }
         .reasons-grid {
             display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 20px;
@@ -196,6 +198,9 @@
     <audio id="bg-music" loop>
         <source src="song.mp3" type="audio/mpeg">
     </audio>
+    <audio id="cheer-sound">
+        <source src="cheer.mp3" type="audio/mpeg">
+    </audio>
 
     <div class="music-control" onclick="toggleMusic()" id="music-btn">
         🎵
@@ -249,6 +254,24 @@
             </div>
         </section>
 
+        <section style="margin-bottom: 60px; text-align: center;">
+            <h2 style="font-size: 2.5rem; margin-bottom: 20px; font-family: 'Dancing Script', cursive; color: var(--secondary-color);">Time Since We Met</h2>
+            <div id="love-timer" style="
+                font-family: 'Poppins', sans-serif;
+                font-size: 1.2rem;
+                background: white;
+                display: inline-block;
+                padding: 15px 30px;
+                border-radius: 50px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+                color: var(--secondary-color);
+                font-weight: bold;
+                border: 2px solid #ffe3e8;
+            ">
+                Calculating...
+            </div>
+        </section>
+
         <section class="reasons-container">
             <h2>10 Reasons I Love You</h2>
             <p style="margin-bottom: 30px; opacity: 0.8;">Click the hearts to see why...</p>
@@ -263,7 +286,7 @@
                 <div class="reason-card" onclick="this.classList.toggle('flipped')">
                     <div class="reason-inner">
                         <div class="reason-front">♥</div>
-                        <div class="reason-back"><p>How you care for others</p></div>
+                        <div class="reason-back"><p>How you care</p></div>
                     </div>
                 </div>
                 <div class="reason-card" onclick="this.classList.toggle('flipped')">
@@ -293,7 +316,7 @@
                 <div class="reason-card" onclick="this.classList.toggle('flipped')">
                     <div class="reason-inner">
                         <div class="reason-front">♥</div>
-                        <div class="reason-back"><p>You're my best friend</p></div>
+                        <div class="reason-back"><p>My best friend</p></div>
                     </div>
                 </div>
                 <div class="reason-card" onclick="this.classList.toggle('flipped')">
@@ -305,7 +328,7 @@
                 <div class="reason-card" onclick="this.classList.toggle('flipped')">
                     <div class="reason-inner">
                         <div class="reason-front">♥</div>
-                        <div class="reason-back"><p>How we talk for hours</p></div>
+                        <div class="reason-back"><p>Late night talks</p></div>
                     </div>
                 </div>
                 <div class="reason-card" onclick="this.classList.toggle('flipped')">
@@ -350,10 +373,15 @@ With all my love,
     </div>
 
     <script>
-        // --- PASSWORD CONFIG ---
+        // --- CONFIGURATION ---
         const secretPassword = "love"; 
+        
+        // ** CHANGE DATE HERE FOR THE CLOCK ** (Year, Month-1, Day)
+        // Month is 0-indexed: 0=Jan, 1=Feb ... 7=Aug ... 11=Dec
+        const startDate = new Date(2022, 7, 25); 
 
-        // --- PRANK GAME VARIABLES ---
+        // ---------------------
+
         let jumps = 0;
         const maxJumps = 6;
         const taunts = ["Too slow! 😜", "Missed me! 😂", "Catch me if you can!", "Nope!", "Almost...", "Okay I give up! ❤️"];
@@ -396,6 +424,19 @@ With all my love,
             }
         }
 
+        // --- LIVE CLOCK LOGIC ---
+        function updateTimer() {
+            const now = new Date();
+            const diff = now - startDate;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / (1000 * 60)) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+            document.getElementById('love-timer').innerText = `${days} Days, ${hours} Hours, ${minutes} Mins, ${seconds} Secs`;
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
         // --- PRANK BUTTON LOGIC ---
         function moveButton(event) {
             const btn = document.getElementById('runaway-btn');
@@ -422,13 +463,19 @@ With all my love,
             if (jumps >= maxJumps) btn.innerText = "Okay, I give up! Click me! ❤️";
         }
 
-        // --- CONFETTI REVEAL ---
+        // --- CONFETTI + SOUND REVEAL ---
         function revealMessage() {
             const message = document.getElementById('hidden-message');
+            const cheerSound = document.getElementById('cheer-sound');
+            
             message.style.display = 'block';
             message.scrollIntoView({ behavior: 'smooth' });
+            
+            // PLAY SOUND
+            cheerSound.volume = 0.6;
+            cheerSound.play().catch(e => console.log("Sound play failed", e));
 
-            // Confetti Magic
+            // CONFETTI
             var duration = 3 * 1000;
             var animationEnd = Date.now() + duration;
             var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
