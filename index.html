@@ -92,7 +92,7 @@
         .polaroid:hover { transform: scale(1.05) rotate(0deg); z-index: 20; }
         .photo-placeholder { width: 100%; height: 220px; background-size: cover; background-position: center; background-color: #eee; }
         
-        /* PHOTOS - PASTE LINKS HERE */
+        /* PHOTOS */
         .photo-1 { background-image: url('https://picsum.photos/id/1011/400/400'); }
         .photo-2 { background-image: url('https://picsum.photos/id/1012/400/400'); }
         .photo-3 { background-image: url('https://picsum.photos/id/1025/400/400'); }
@@ -165,8 +165,53 @@
         h2 { font-family: 'Dancing Script', cursive; font-size: 3rem; color: var(--secondary-color); margin-bottom: 20px; text-align: center; }
         .letter-text { font-size: 1.2rem; line-height: 1.8; white-space: pre-wrap; color: #444; }
 
-        .surprise-btn { padding: 15px 45px; background: linear-gradient(45deg, var(--primary-color), var(--secondary-color)); border: none; border-radius: 50px; color: white; font-family: 'Poppins', sans-serif; font-size: 1.2rem; cursor: pointer; box-shadow: 0 10px 25px rgba(201, 102, 121, 0.4); margin-bottom: 50px; }
-        #hidden-message { display: none; margin-top: 20px; animation: popUp 0.5s ease; }
+        /* --- NEW: VALENTINE QUESTION SECTION --- */
+        .valentine-section {
+            margin-top: 50px;
+            padding: 40px;
+            /* No background box, just text and buttons */
+        }
+        
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+            height: 100px; /* Space for growing button */
+        }
+
+        #yes-btn {
+            padding: 15px 40px;
+            background-color: #4CAF50; /* Green for Yes */
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
+        }
+
+        #no-btn {
+            padding: 15px 40px;
+            background-color: #f44336; /* Red for No */
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(244, 67, 54, 0.3);
+        }
+
+        #success-message {
+            display: none;
+            margin-top: 20px;
+            animation: popUp 0.5s ease;
+        }
 
         /* --- MUSIC BUTTON --- */
         .music-control {
@@ -292,18 +337,6 @@
             </div>
         </section>
 
-        <section style="margin-bottom: 60px;">
-            <h2 style="margin-bottom: 20px;">Our Bucket List 🌍</h2>
-            <div style="background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); max-width: 500px; margin: 0 auto; text-align: left;">
-                <div style="margin-bottom: 15px; color: #aaa; text-decoration: line-through;">✅ Go on a first date</div>
-                <div style="margin-bottom: 15px; color: #aaa; text-decoration: line-through;">✅ Fall in love</div>
-                <div style="margin-bottom: 15px; font-size: 1.1rem; color: #555;">⬜ Go on a road trip 🚗</div>
-                <div style="margin-bottom: 15px; font-size: 1.1rem; color: #555;">⬜ Cook a fancy dinner together 🍝</div>
-                <div style="margin-bottom: 15px; font-size: 1.1rem; color: #555;">⬜ Adopt a pet 🐶</div>
-                <div style="font-size: 1.1rem; color: #555;">⬜ Grow old together 👵👴</div>
-            </div>
-        </section>
-
         <section class="reasons-container">
             <h2>10 Reasons I Love You</h2>
             <p style="margin-bottom: 30px; opacity: 0.8;">Click the hearts to see why...</p>
@@ -343,11 +376,17 @@ With all my love,
             </p>
         </section>
 
-        <section>
-            <button class="surprise-btn" onclick="revealMessage()">Click for one last surprise</button>
-            <div id="hidden-message">
-                <h2 style="margin-bottom: 10px;">I Love You! ❤️</h2>
-                <p>Ready for our dinner date?</p>
+        <section class="valentine-section" id="valentine-question">
+            <h2 style="font-size: 3rem; color: var(--secondary-color); font-family: 'Dancing Script', cursive;">Will you be my Valentine?</h2>
+            
+            <div class="btn-group">
+                <button id="yes-btn" onclick="acceptValentine()">YES</button>
+                <button id="no-btn" onmouseover="shrinkNo()" onclick="shrinkNo()">NO</button>
+            </div>
+
+            <div id="success-message">
+                <h2 style="font-size: 3.5rem; margin-bottom: 20px; color: #4CAF50;">I KNEW IT! ❤️</h2>
+                <p style="font-size: 1.5rem;">See you tonight! 😘</p>
             </div>
         </section>
     </div>
@@ -485,13 +524,30 @@ With all my love,
             if (jumps >= maxJumps) btn.innerText = "Okay, I give up! Click me! ❤️";
         }
 
-        // --- CONFETTI + SOUND REVEAL ---
-        function revealMessage() {
-            const message = document.getElementById('hidden-message');
+        // --- YES/NO BUTTON LOGIC ---
+        let yesScale = 1;
+        let noScale = 1;
+
+        function shrinkNo() {
+            const yesBtn = document.getElementById('yes-btn');
+            const noBtn = document.getElementById('no-btn');
+
+            yesScale += 0.2; // Yes grows
+            noScale -= 0.1;  // No shrinks
+
+            yesBtn.style.transform = `scale(${yesScale})`;
+            noBtn.style.transform = `scale(${noScale})`;
+        }
+
+        function acceptValentine() {
+            const successMsg = document.getElementById('success-message');
+            const btnGroup = document.querySelector('.btn-group');
             const cheerSound = document.getElementById('cheer-sound');
-            
-            message.style.display = 'block';
-            message.scrollIntoView({ behavior: 'smooth' });
+
+            // Hide Buttons
+            btnGroup.style.display = 'none';
+            // Show Message
+            successMsg.style.display = 'block';
             
             // Play Sound
             cheerSound.volume = 0.6;
